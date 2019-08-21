@@ -86,12 +86,9 @@ make delete
 ## Known issues
 
 -    USB port is locked out of the host machine, making tests rather tedious (needs to tear down `vagrant halt`) to test ledger on host machine
--    On Ubuntu, if the dongle is not found in the vagrant box, be sure that your **host** user belongs to the vboxusers group `sudo usermod -aG vboxusers <username>` (see https://askubuntu.com/questions/25596/how-to-set-up-usb-for-virtualbox/25600#25600)
--   If you have some issue involving wrong TARGET_ID, please either upgrade your nano S firmware to 1.5.x, and/or downgrade the nanos-secure-sdk tag to match your version.
-  ```shell
-cd /opt/bolos/nanos-secure-sdk
-sudo git checkout tags/nanos-1553
-```
+-    On Ubuntu, if the dongle is not found in the vagrant box, be sure that your **host** user belongs to the vboxusers group  
+`sudo usermod -aG vboxusers <username>`  
+(_see [askubuntu.com/How-to-set-up-USB-for-VirtualBox](https://askubuntu.com/questions/25596/how-to-set-up-usb-for-virtualbox/25600#25600)_)
 -   Some python example scripts use the SECP256K1 library, you can install it via pip:
 ```shell
 pip install secp256k1
