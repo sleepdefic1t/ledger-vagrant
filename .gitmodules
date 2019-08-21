@@ -1,0 +1,3 @@
+[submodule "apps/ledger-app-ark"]
+	path = apps/ledger-app-ark
+	url = https://github.com/ArkEcosystem/ledger
