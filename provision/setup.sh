@@ -12,27 +12,29 @@ echo "Setting up BOLOS environment"
 mkdir /opt/bolos
 cd /opt/bolos
 
-echo "Installing custom compilers, can take a few minutes..."
+echo "Installing custom compilers, this will take a few minutes..."
 wget -q https://launchpad.net/gcc-arm-embedded/5.0/5-2016-q1-update/+download/gcc-arm-none-eabi-5_3-2016q1-20160330-linux.tar.bz2
 tar xjf gcc-arm-none-eabi-5_3-2016q1-20160330-linux.tar.bz2
 ln -s /opt/bolos/gcc-arm-none-eabi-5_3-2016q1/bin/arm-none-eabi-gcc /usr/bin/arm-none-eabi-gcc
 
-wget -q http://releases.llvm.org/4.0.0/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz
-tar xvf clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz
-mv clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-14.04 clang-arm-fropi
+wget -q https://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz
+tar xvf clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz
+mv clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04 clang-arm-fropi
 chmod 757 -R clang-arm-fropi/
 chmod +x clang-arm-fropi/bin/clang
 ln -s /opt/bolos/clang-arm-fropi/bin/clang /usr/bin/clang
 
-echo "cloning sdk for nano s"
+echo "Fetching the Nano S SDK"
 cd /opt/bolos/
-git clone https://github.com/LedgerHQ/nanos-secure-sdk.git
-cd nanos-secure-sdk/
-git checkout tags/nanos-1421
-cd /opt/bolos/
+if [ ! -d "/opt/bolos/nanos-secure-sdk" ]; then
+  git clone https://github.com/LedgerHQ/nanos-secure-sdk.git
+  cd nanos-secure-sdk/
+  git -c advice.detachedHead=false checkout tags/nanos-1553
+  cd /opt/bolos/
+fi
 
-echo "finetuning rights for usb access"
-wget -q -O - https://raw.githubusercontent.com/LedgerHQ/udev-rules/master/add_udev_rules.sh | bash
+echo "Finetuning rights for USB access"
+sudo bash /vagrant/provision/udev.sh
 usermod -a -G plugdev vagrant
 
 echo "Setting up bash profile"
@@ -43,3 +45,12 @@ echo "export BOLOS_SDK=/opt/bolos/nanos-secure-sdk" >> /home/vagrant/.bashrc
 echo "export ARM_HOME=/opt/bolos/gcc-arm-none-eabi-5_3-2016q1" >> /home/vagrant/.bashrc
 echo "" >> /home/vagrant/.bashrc
 echo "export PATH=\$PATH:\$ARM_HOME/bin" >> /home/vagrant/.bashrc
+
+echo "Fetching example app for the Ledger Nano"
+if [ ! -d "apps/ledger-app-ark" ]; then
+  echo "cloning..."
+  git clone https://github.com/ArkEcosystem/ledger apps/ledger-app-ark
+else
+  echo "updating..."
+  cd apps/ledger-app-ark && git pull origin master
+fi
