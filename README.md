@@ -3,6 +3,7 @@
 ## Installation
 
 Requirements:
+-   Ledger Nano S
 -   Git
 -   VirtualBox
 -   Vagrant
@@ -36,14 +37,14 @@ Windows:
 ## Clone the Ledger-Vagrant package
 
 ```shell
-git clone https://github.com/fix/ledger-vagrant
+git clone https://github.com/sleepdefic1t/ledger-vagrant
 cd ledger-vagrant
 vagrant up
 ```
 
 *_this will take a few minutes to install_
 
-## Compile an app
+## Prepare an app
 
 -   install the app under the `apps/` directory:
 
@@ -57,24 +58,30 @@ git clone https://github.com/ArkEcosystem/ledger apps/ledger-app-ark
 vagrant ssh
 ```
 
-## Build the app
+## Build and Flash an app
 
-```shell
-cd apps/ledger-app-<appName>
-make clean
-make
-```
+-    connect your ledger Nano S to your computer
 
-or
-
+**Option 1**: ledger-app-ark
 ```shell
 cd apps/ledger-app-ark
 sh ./rebuild.sh
 ```
 
--    connect your ledger Nano S to your computer
--    install the app on your ledger: `make load`
--    remove the app from the ledger: `make delete`
+**Option 2**: using make
+
+```shell
+cd apps/<appName>
+make clean
+make
+
+
+# to install the app on your Ledger:
+make load
+
+# to remove the app from the Ledger:
+make delete
+```
 
 ## Known issues
 
@@ -97,4 +104,3 @@ This project exists thanks to all the people who [contribute](../../contributors
 ## License
 
 [MIT](LICENSE)
-
