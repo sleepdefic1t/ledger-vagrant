@@ -49,8 +49,8 @@ echo "export PATH=\$PATH:\$ARM_HOME/bin" >> /home/vagrant/.bashrc
 echo "Fetching example app for the Ledger Nano"
 if [ ! -d "apps/ledger-app-ark" ]; then
   echo "cloning..."
-  git clone https://github.com/ArkEcosystem/ledger apps/ledger-app-ark
+  git clone https://github.com/ArkEcosystem/ledger ~/apps/ledger-app-ark
 else
   echo "updating..."
-  cd apps/ledger-app-ark && git pull origin master
+  cd ~/apps/ledger-app-ark && git pull origin master
 fi
